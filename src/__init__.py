@@ -1,9 +1,12 @@
-# inspired from https://flask.palletsprojects.com/en/1.1.x/tutorial/factory/
+#inspired from https://github.com/GoogleCloudPlatform/getting-started-python/tree/master/optional-kubernetes-engine
 
 import os
 import logging
 
 from flask import Flask
+from flask_restplus import Api
+
+from .posters import api as posters_api
 
 
 def create_app(config, debug=False, testing=False, config_overrides=None):
@@ -21,6 +24,13 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
         logging.basicConfig(level=logging.INFO)
 
    
+    api = Api(app,
+        title='Posters API',
+        doc="/swagger/"
+    )
+
+    api.add_namespace(posters_api)
+
     # Create a health check handler. Health checks are used when running on
     # Google Compute Engine by the load balancer to determine which instances
     # can serve traffic. Google App Engine also uses health checking, but
@@ -37,6 +47,6 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
         return """
         An internal error occurred: <pre>{}</pre>
         See logs for full stacktrace.
-        """.format(e), 500
+        """.format(e), 500  
 
     return app
