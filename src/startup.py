@@ -6,7 +6,7 @@ import logging
 from flask import Flask
 from flask_restplus import Api
 
-from posters.controllers.jobs import api as jobs_api
+from api.controllers.jobs import api as jobs_api
 
 
 def create_app(config, debug=False, testing=False, config_overrides=None):
