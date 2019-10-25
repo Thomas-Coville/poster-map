@@ -6,7 +6,7 @@ import logging
 from flask import Flask
 from flask_restplus import Api
 
-from .posters import api as posters_api
+from posters.controllers.jobs import api as jobs_api
 
 
 def create_app(config, debug=False, testing=False, config_overrides=None):
@@ -25,11 +25,11 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
 
    
     api = Api(app,
-        title='Posters API',
+        title='Posters',
         doc="/swagger/"
     )
 
-    api.add_namespace(posters_api)
+    api.add_namespace(jobs_api)
 
     # Create a health check handler. Health checks are used when running on
     # Google Compute Engine by the load balancer to determine which instances
