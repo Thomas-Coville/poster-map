@@ -1,11 +1,11 @@
 
-import api
+import src
 import config
 
 
 # Note: debug=True is enabled here to help with troubleshooting. You should
 # remove this in production.
-app = api.create_app(config, debug=True)
+app = src.create_app(config, debug=True)
 
 
 # This is only used when running locally. When running live, gunicorn runs
