@@ -1,4 +1,4 @@
-flask>=1.0.0
 gunicorn==19.9.0
-mongoengine
+flask>=1.0.0
 flask-mongoengine
+flask-marshmallow

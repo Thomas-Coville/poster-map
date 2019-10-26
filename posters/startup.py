@@ -2,18 +2,23 @@
 
 import os
 import logging
+import datetime
+import json
 
-import config
-
-from flask import Flask, Request
+# Flask extensions
+from flask import Flask, jsonify
 from flask_mongoengine import MongoEngine
+from flask_marshmallow import Marshmallow
 
+# Domain modules
+import config
 from models import Job
 
 
 def create_app(config_overrides=None):
     app = Flask(__name__)
 
+    # config
     if app.config["ENV"] == "production":
         app.config.from_object("config.ProductionConfig")
     else:
@@ -22,19 +27,21 @@ def create_app(config_overrides=None):
     if config_overrides is not None:
         app.config.update(config_overrides)
 
-    # Configure db
-    MongoEngine(app)
+    # Extensions
+    mongo = MongoEngine(app)
+    marshmallow = Marshmallow(app)
 
     # Configure logging
     if not app.testing:
         logging.basicConfig(level=logging.INFO)
 
 
+    # API
     @app.route('/jobs', methods = ['POST'])
     def create_job():
-        job = Job().save()
+        job = Job(width=1234).save()
+        print(job.dump())
 
-        print(job)
         return 'ok', 200
 
     @app.route('/health')
