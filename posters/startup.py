@@ -10,9 +10,12 @@ from flask import Flask, jsonify
 from flask_mongoengine import MongoEngine
 from flask_marshmallow import Marshmallow
 
+from webargs import fields
+from webargs.flaskparser import use_args
+
 # Domain modules
 import config
-from models import Job
+from models import Job, JobSchema
 
 
 def create_app(config_overrides=None):
@@ -38,13 +41,30 @@ def create_app(config_overrides=None):
 
     # API
     @app.route('/jobs', methods = ['POST'])
-    def create_job():
-        job = Job(width=1234).save()
-        return job.dump()
+    @use_args(JobSchema())
+    def create_job(args):
+        job = Job(
+            latitude = args["latitude"],
+            longitude = args["longitude"]
+        ).save()
 
+        schema = JobSchema()
+        return schema.dump(job)
+        
     @app.route('/health')
     def health_check():
         return 'ok', 200
+
+    # Return validation errors as JSON
+    @app.errorhandler(422)
+    @app.errorhandler(400)
+    def handle_error(err):
+        headers = err.data.get("headers", None)
+        messages = err.data.get("messages", ["Invalid request."])
+        if headers:
+            return jsonify({"errors": messages}), err.code, headers
+        else:
+            return jsonify({"errors": messages}), err.code
 
     @app.errorhandler(500)
     def server_error(e):

@@ -1,4 +1,7 @@
 gunicorn==19.9.0
 flask>=1.0.0
-flask-mongoengine
-flask-marshmallow
+marshmallow>2.0.0,<3.0.0
+webargs==5.5.2
+flask-mongoengine==0.9.5
+flask-marshmallow==0.10.1
+marshmallow-mongoengine==0.9.1
