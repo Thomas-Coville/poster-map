@@ -1,11 +1,8 @@
 
 import startup
-import config
 
 
-# Note: debug=True is enabled here to help with troubleshooting. You should
-# remove this in production.
-app = startup.create_app(config, debug=True)
+app = startup.create_app()
 
 
 # This is only used when running locally. When running live, gunicorn runs

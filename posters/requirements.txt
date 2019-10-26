@@ -1,3 +1,4 @@
 flask>=1.0.0
-flask-restplus
 gunicorn==19.9.0
+mongoengine
+flask-mongoengine
