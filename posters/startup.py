@@ -1,4 +1,4 @@
-#inspired from https://github.com/GoogleCloudPlatform/getting-started-python/tree/master/optional-kubernetes-engine
+# inspired from https://github.com/GoogleCloudPlatform/getting-started-python/tree/master/optional-kubernetes-engine
 
 import os
 import logging
@@ -6,7 +6,7 @@ import logging
 from flask import Flask
 from flask_restplus import Api
 
-from api.controllers.jobs import api as jobs_api
+from api.jobs import ns as jobs_api
 
 
 def create_app(config, debug=False, testing=False, config_overrides=None):
@@ -23,11 +23,10 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
     if not app.testing:
         logging.basicConfig(level=logging.INFO)
 
-   
     api = Api(app,
-        title='Posters',
-        doc="/swagger/"
-    )
+              title='Posters',
+              doc="/swagger/"
+              )
 
     api.add_namespace(jobs_api)
 
@@ -47,6 +46,6 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
         return """
         An internal error occurred: <pre>{}</pre>
         See logs for full stacktrace.
-        """.format(e), 500  
+        """.format(e), 500
 
     return app
