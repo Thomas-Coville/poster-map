@@ -5,3 +5,4 @@ webargs==5.5.2
 flask-mongoengine==0.9.5
 flask-marshmallow==0.10.1
 marshmallow-mongoengine==0.9.1
+PIL

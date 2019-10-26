@@ -1,6 +1,6 @@
 
 from models import Job
-from image_generator import MapGen
+from generator import MapGen
 
 class JobsService(object):
     
