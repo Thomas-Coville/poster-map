@@ -44,8 +44,11 @@ def create_app(config_overrides=None):
     @use_args(JobSchema())
     def create_job(args):
         job = Job(
-            latitude = args["latitude"],
-            longitude = args["longitude"]
+            latitude =args["latitude"],
+            longitude = args["longitude"],
+            width = args["width"],
+            height = args["height"],
+            zoom = args["zoom"]
         ).save()
 
         schema = JobSchema()

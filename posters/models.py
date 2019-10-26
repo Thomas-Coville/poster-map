@@ -1,6 +1,6 @@
-import mongoengine
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
 from bson import ObjectId
+import mongoengine
 import marshmallow_mongoengine as ma
 
 Schema.TYPE_MAPPING[ObjectId] = fields.String
@@ -16,4 +16,3 @@ class JobSchema(ma.ModelSchema):
     class Meta:
          model = Job
          strict=True
-
