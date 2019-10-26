@@ -1,3 +1,11 @@
+# ########################################################################
+#                       DISCLAIMER
+# I am not the inventor of this algorithm, I merely refactored it to fit 
+# in a class as a learning project to ramp up on Python.
+# the original implementation can be found here: https://github.com/kuboris/high-def-gmap-export
+#
+# ########################################################################
+
 # Based on older script by Hayden Eskriett
 # and https://gis.stackexchange.com/questions/46729/corner-coordinates-of-google-static-map-tile
 # Updated 2/2018 to use newer api
