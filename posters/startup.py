@@ -15,7 +15,8 @@ from webargs.flaskparser import use_args
 
 # Domain modules
 import config
-from models import Job, JobSchema
+from models import JobSchema
+from services import JobsService
 
 
 def create_app(config_overrides=None):
@@ -38,22 +39,20 @@ def create_app(config_overrides=None):
     if not app.testing:
         logging.basicConfig(level=logging.INFO)
 
-
     # API
-    @app.route('/jobs', methods = ['POST'])
+    @app.route('/jobs', methods=['POST'])
     @use_args(JobSchema())
     def create_job(args):
-        job = Job(
-            latitude =args["latitude"],
-            longitude = args["longitude"],
-            width = args["width"],
-            height = args["height"],
-            zoom = args["zoom"]
-        ).save()
+
+        job = JobsService.create_job( latitude=args["latitude"],
+            longitude=args["longitude"],
+            zoom=args["zoom"],
+            height=args["height"],
+            width=args["width"])
 
         schema = JobSchema()
         return schema.dump(job)
-        
+
     @app.route('/health')
     def health_check():
         return 'ok', 200
