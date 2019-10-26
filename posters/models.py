@@ -21,5 +21,4 @@ class Job(mongoengine.Document):
     zoom = mongoengine.IntField()
 
     def dump(self):
-        
         return self._schema.dump(self)

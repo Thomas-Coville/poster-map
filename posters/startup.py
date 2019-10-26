@@ -40,9 +40,7 @@ def create_app(config_overrides=None):
     @app.route('/jobs', methods = ['POST'])
     def create_job():
         job = Job(width=1234).save()
-        print(job.dump())
-
-        return 'ok', 200
+        return job.dump(), 200
 
     @app.route('/health')
     def health_check():
