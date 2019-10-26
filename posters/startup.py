@@ -28,8 +28,8 @@ def create_app(config_overrides=None):
         app.config.update(config_overrides)
 
     # Extensions
-    mongo = MongoEngine(app)
-    marshmallow = Marshmallow(app)
+    MongoEngine(app)
+    Marshmallow(app)
 
     # Configure logging
     if not app.testing:
@@ -40,7 +40,7 @@ def create_app(config_overrides=None):
     @app.route('/jobs', methods = ['POST'])
     def create_job():
         job = Job(width=1234).save()
-        return job.dump(), 200
+        return job.dump()
 
     @app.route('/health')
     def health_check():
