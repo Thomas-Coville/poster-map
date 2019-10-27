@@ -1,5 +1,18 @@
 version: '3.4'
 services:
+  api:
+    build:
+      context: posters
+      dockerfile: Dockerfile
+    container_name: some_api
+    depends_on:
+      - redis
+    command: gunicorn --config ./config/gunicorn_config.py startup:create_app()
+    environment:
+    - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
+    - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
+    ports:
+    - "8000:8000"
   worker:
     build:
       context: posters
@@ -7,7 +20,7 @@ services:
     container_name: some_worker
     depends_on:
       - redis
-    command: celery -A entrypoint_celery.celery worker --loglevel=debug
+    command: celery -A entrypoint_celery.celery worker --loglevel=info
     environment:
     - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
     - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
@@ -18,7 +31,7 @@ services:
     container_name: some_flower
     depends_on:
       - redis
-    command: celery -A entrypoint_celery.celery flower --loglevel=debug --port=5000
+    command: celery -A entrypoint_celery.celery flower --loglevel=info --port=5000
     environment:
     - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
     - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
