@@ -10,15 +10,8 @@ from flask import Flask, jsonify
 from flask_mongoengine import MongoEngine
 from flask_marshmallow import Marshmallow
 from dynaconf import FlaskDynaconf, settings
-
-from webargs import fields
-from webargs.flaskparser import use_args
-
-# Domain modules
-from models import JobSchema
-from services import JobsService
 import tasks
-
+import routes
 
 logger = logging.getLogger()
 
@@ -44,20 +37,8 @@ def entrypoint(debug=False, mode='app'):
     configure_logging(debug=debug)
     configure_celery(app, tasks.celery)
 
-    # API
-    @app.route('/jobs', methods=['POST'])
-    @use_args(JobSchema())
-    def create_job(args):
-
-        job = JobsService.create_job( latitude=args["latitude"],
-            longitude=args["longitude"])
-
-        schema = JobSchema()
-        return schema.dump(job)
-
-    @app.route('/health')
-    def health_check():
-        return 'ok', 200
+    # register blueprints
+    app.register_blueprint(routes.bp, url_prefix='')
 
     # Return validation errors as JSON
     @app.errorhandler(422)
@@ -77,6 +58,9 @@ def entrypoint(debug=False, mode='app'):
         See logs for full stacktrace.
         """.format(e), 500
 
+    @app.route('/health')
+    def health_check():
+        return 'ok', 200
 
     if mode=='app':
         return app

@@ -3,9 +3,8 @@ from models import Job
 from tasks import say_hello
 
 class JobsService(object):
-    
-    @staticmethod
-    def create_job(latitude, longitude):
+        
+    def create_job(self, latitude, longitude):
         job = Job(
             latitude = latitude,
             longitude = longitude
