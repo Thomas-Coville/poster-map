@@ -67,7 +67,9 @@ this will create a `.secrets.toml` file that will be copied inside the docker co
 # Lesson Learns & Gotchas
 - Doing Python development on Windows is HARD:
 - virtualenv powershell script does not work in my CMDER shell (readonly prompt)
-- Celery 4+ does not support windows officially and probably crashes under the hood. I spend one full day figuring out why my tasks were not beeing sent to the broker. I still haven't figured precisely why it doesn't worked but it works fine within a docker container.
+- Celery 4+ does not support windows officially and probably crashes under the hood. I spend one full day figuring out why my tasks were not being sent to the broker. I still haven't figured precisely why it doesn't worked but it works fine within a docker container.
+- the Flask integration with Marshmallow 3+ seems flaky, I had to fix it to the latest 2.x.x version
+- kombu 4.6.5+ seems to cause an issue with Flower, stick to the 4.6.3 version
 
 # Next Steps
 - UI to front the API
