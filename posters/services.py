@@ -11,7 +11,7 @@ class JobsService(object):
             status = "pending"
         ).save()            
 
-        tasks.execute_job(str(job.id))
+        tasks.execute_job.delay(str(job.id))
 
         return job
 
