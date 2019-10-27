@@ -67,7 +67,7 @@ class MapGen(object):
         return lat, lon
 
 
-    def execute(self):            
+    def execute(self, id):            
         self.tileSize_width=self.size_tile_x*self.scale
         self.tileSize_height=self.size_tile_y*self.scale
         width_final=self.map_tile_width*self.tileSize_width
@@ -100,4 +100,4 @@ class MapGen(object):
                 #       map_img.paste(im, ((x-1+map_tile_width)*self.tileSize_width, (map_tile_height-1-y)*(self.tileSize_height-50*scale)))
             
                 os.remove(current_tile)
-        map_img.save("high_resolution_image.png")    
+        map_img.save(f"{id}.png")    

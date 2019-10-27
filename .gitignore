@@ -110,3 +110,4 @@ venv.bak/
 .secrets.*
 **/*.local* 
 posters/high_resolution_image.png
+docker-compose.override.yaml

@@ -8,6 +8,7 @@ Schema.TYPE_MAPPING[ObjectId] = fields.String
 class Job(mongoengine.Document):
     latitude = mongoengine.FloatField(required=True)
     longitude = mongoengine.FloatField(required=True)
+    status = mongoengine.StringField(choices=["pending","started", "completed"])
 
 class JobSchema(ma.ModelSchema):
     class Meta:

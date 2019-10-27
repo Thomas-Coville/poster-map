@@ -75,16 +75,10 @@ def configure_app(app):
 def configure_celery(app, celery):
 
     # set broker url and result backend from app config
-    celery.conf.broker_url = app.config['CELERY_BROKER_URL']
-    celery.conf.result_backend = app.config['CELERY_RESULT_BACKEND']
-    celery.conf.broker_transport_options  = {
-        'max_retries': 3,
-        'interval_start': 0,
-        'interval_step': 0.2,
-        'interval_max': 0.5,
-    }
+    celery.conf.broker_url = settings['CELERY_BROKER_URL']
+    celery.conf.result_backend = settings['CELERY_RESULT_BACKEND']
 
-    # celery.conf.update(app.config)
+    celery.conf.update(app.config)
 
     TaskBase = celery.Task
     class ContextTask(TaskBase):

@@ -1,47 +1,52 @@
 version: '3.4'
 services:
-  api:
-    build:
-      context: posters
-      dockerfile: Dockerfile
-    container_name: some_api
-    depends_on:
-      - redis
-    # command: gunicorn --config ./config/gunicorn_config.py startup:create_app()
-    command: python entrypoint_api.py --port 8000 --debug
-    environment:
-    - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
-    - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
-    ports:
-    - "8000:8000"
-    volumes:
-    - "./posters:/app"
+  # api:
+  #   build:
+  #     context: posters
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - redis
+  #     - mongo
+  #   command: gunicorn --config ./config/gunicorn_config.py startup:create_app()
+  #   environment:
+  #   - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
+  #   - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
+  #   - DYNACONF_MONGODB_HOST="mongo"
+  #   ports:
+  #   - "8000:8000"    
+  #   restart: always
   worker:
     build:
       context: posters
-      dockerfile: Dockerfile
-    container_name: some_worker
+      dockerfile: Dockerfile  
     depends_on:
       - redis
+      - mongo
     command: celery -A entrypoint_celery.celery worker --loglevel=info
     environment:
     - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
     - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
+    - DYNACONF_MONGODB_HOST="mongo"    
+    restart: always
   flower:
     build:
       context: posters
-      dockerfile: Dockerfile
-    container_name: some_flower
+      dockerfile: Dockerfile    
     depends_on:
       - redis
+      - mongo
     command: celery -A entrypoint_celery.celery flower --loglevel=info --port=5000
     environment:
     - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
     - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
+    - DYNACONF_MONGODB_HOST="mongo"
     ports:
     - "5000:5000"
   redis:
-    image: redis:alpine
-    container_name: some_redis
+    image: redis:alpine  
     ports:
       - "6379:6379"
+  mongo:
+    image: mongo
+    ports:
+    - "27017:27017"
