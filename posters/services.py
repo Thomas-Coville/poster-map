@@ -22,7 +22,7 @@ class JobsService(object):
     def execute_job(job):
         gen = MapGen()
         
-        gen.generateImage()
+        gen.execute()
 
         pass
         
