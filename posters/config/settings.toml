@@ -1,0 +1,9 @@
+[default]
+MONGODB_DB="posters"
+DEBUG=false
+TESTING=false
+
+[development]
+DEBUG=true
+
+[production]
