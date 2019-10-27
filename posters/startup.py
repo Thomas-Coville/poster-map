@@ -9,27 +9,20 @@ import json
 from flask import Flask, jsonify
 from flask_mongoengine import MongoEngine
 from flask_marshmallow import Marshmallow
+from dynaconf import FlaskDynaconf
 
 from webargs import fields
 from webargs.flaskparser import use_args
 
 # Domain modules
-import config
 from models import JobSchema
 from services import JobsService
 
 
-def create_app(config_overrides=None):
+def create_app():
     app = Flask(__name__)
 
-    # config
-    if app.config["ENV"] == "production":
-        app.config.from_object("config.ProductionConfig")
-    else:
-        app.config.from_object("config.DevelopmentConfig")
-
-    if config_overrides is not None:
-        app.config.update(config_overrides)
+    FlaskDynaconf(app)    
 
     # Extensions
     MongoEngine(app)
@@ -45,10 +38,7 @@ def create_app(config_overrides=None):
     def create_job(args):
 
         job = JobsService.create_job( latitude=args["latitude"],
-            longitude=args["longitude"],
-            zoom=args["zoom"],
-            height=args["height"],
-            width=args["width"])
+            longitude=args["longitude"])
 
         schema = JobSchema()
         return schema.dump(job)

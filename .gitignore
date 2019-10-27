@@ -108,3 +108,5 @@ venv.bak/
 
 # Ignore dynaconf secret files
 .secrets.*
+**/*.local* 
+posters/high_resolution_image.png

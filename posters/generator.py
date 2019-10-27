@@ -19,6 +19,8 @@ from PIL import Image
 import os
 import math
 
+from dynaconf import settings
+
 class MapGen(object):
 
     #Google uses this tile size
@@ -27,9 +29,9 @@ class MapGen(object):
     _initialResolution = 2 * math.pi * 6378137 / _tileSize
     _originShift = 2 * math.pi * 6378137 / 2.0
 
-    def __init__(self):
-        self.latitude = 45.378906
-        self.longitude = -74.106506    
+    def __init__(self, latitude, longitude):
+        self.latitude = latitude
+        self.longitude = longitude   
         self.zoom = 14            
         self.scale=1
         self.size_tile_x = 512
@@ -39,7 +41,7 @@ class MapGen(object):
         self.format_image='png'
         self.maptype='roadmap'
         self.style = 'element:labels.icon%7Cvisibility:off&style=element:labels.text%7Cvisibility:off&style=element:labels.text.fill%7Ccolor:0x000000%7Csaturation:36%7Clightness:40%7Cvisibility:off&style=element:labels.text.stroke%7Ccolor:0x000000%7Clightness:16%7Cvisibility:off&style=feature:administrative%7Celement:geometry.fill%7Ccolor:0x000000%7Clightness:20&style=feature:administrative%7Celement:geometry.stroke%7Ccolor:0x000000%7Clightness:15%7Cweight:1&style=feature:landscape%7Celement:geometry%7Ccolor:0x000000%7Clightness:20&style=feature:poi%7Celement:geometry%7Ccolor:0xeec844%7Clightness:20&style=feature:poi.park%7Cvisibility:off&style=feature:road%7Celement:geometry.fill%7Ccolor:0xf9f9f9%7Cvisibility:on&style=feature:road.arterial%7Celement:geometry%7Ccolor:0x000000%7Clightness:18&style=feature:road.arterial%7Celement:geometry.fill%7Ccolor:0xeec844&style=feature:road.highway%7Celement:geometry.fill%7Ccolor:0xeec844%7Clightness:15%7Cvisibility:on&style=feature:road.highway%7Celement:geometry.stroke%7Ccolor:0x000000%7Clightness:30&style=feature:road.local%7Celement:geometry%7Ccolor:0x000000%7Clightness:16&style=feature:road.local%7Celement:geometry.fill%7Ccolor:0xfffcfc&style=feature:transit%7Celement:geometry%7Ccolor:0x000000%7Clightness:19&style=feature:water%7Celement:geometry%7Ccolor:0xffffff%7Clightness:17'
-        self.apikey='TODO-CONFIG'
+        self.apikey=settings['GOOGLE_STATIC_MAPS_API_KEY']
 
     @staticmethod
     def _latLonToPixels(lat, lon, zoom):
