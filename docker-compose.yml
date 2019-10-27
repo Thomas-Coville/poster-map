@@ -7,10 +7,23 @@ services:
     container_name: some_worker
     depends_on:
       - redis
-    command: celery worker -A entrypoint_celery.celery --loglevel=debug
+    command: celery -A entrypoint_celery.celery worker --loglevel=debug
     environment:
-    - DYNACONF_CELERY_BROKER_URL="redis://redis:6379"
-    - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379"
+    - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
+    - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
+  flower:
+    build:
+      context: posters
+      dockerfile: Dockerfile
+    container_name: some_flower
+    depends_on:
+      - redis
+    command: celery -A entrypoint_celery.celery flower --loglevel=debug --port=5000
+    environment:
+    - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
+    - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
+    ports:
+    - "5000:5000"
   redis:
     image: redis:alpine
     container_name: some_redis

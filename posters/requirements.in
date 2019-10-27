@@ -1,0 +1,11 @@
+celery
+dynaconf
+flask
+flask-marshmallow
+flask-mongoengine
+gunicorn
+marshmallow==2.20.5
+marshmallow-mongoengine
+Pillow
+redis
+webargs
