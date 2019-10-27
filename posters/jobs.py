@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, send_file
 from webargs.flaskparser import use_args
 from models import JobSchema
 import logging
@@ -20,3 +20,8 @@ def create_job(args):
 def get_job(job_id):        
     job = JobsService.getJobById(job_id)
     return JobSchema().dump(job)
+
+@bp.route('/jobs/<job_id>/image')
+def download_image(job_id):	
+    return send_file('C:\\Users\\thoma\\Desktop\\WhatsApp Image 2019-07-21 at 19.55.38.jpeg', attachment_filename='python.jpg')
+	
