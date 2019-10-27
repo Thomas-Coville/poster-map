@@ -30,7 +30,8 @@ services:
     - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
     - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
     - DYNACONF_MONGODB_HOST="mongo"  
-    - DYNACONF_IMAGES_OUTPUT_PATH="/output"  
+    - DYNACONF_IMAGES_OUTPUT_PATH="/output"
+    - DYNACONF_GOOGLE_STATIC_MAPS_API_KEY =your api key here
     restart: always
     volumes:
     - "./output:/output"
