@@ -7,12 +7,15 @@ services:
     container_name: some_api
     depends_on:
       - redis
-    command: gunicorn --config ./config/gunicorn_config.py startup:create_app()
+    # command: gunicorn --config ./config/gunicorn_config.py startup:create_app()
+    command: python entrypoint_api.py --port 8000 --debug
     environment:
     - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
     - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
     ports:
     - "8000:8000"
+    volumes:
+    - "./posters:/app"
   worker:
     build:
       context: posters

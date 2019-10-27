@@ -10,10 +10,10 @@ logger = logging.getLogger()
 
 # API
 @bp.route('/jobs', methods=['POST'])
-# @use_args(JobSchema())
-def create_job():    
+@use_args(JobSchema())
+def create_job(args):    
     logger.info(f'task name is {tasks.say_hello.name}')
 
-    tasks.say_hello.delay('thomas')
+    tasks.say_hello.delay('plop')
     return "OK"
 

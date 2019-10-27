@@ -9,7 +9,7 @@ from flask_mongoengine import MongoEngine
 from flask_marshmallow import Marshmallow
 from dynaconf import FlaskDynaconf, settings
 import tasks
-import routes
+import jobs
 
 logger = logging.getLogger()
 
@@ -35,7 +35,7 @@ def entrypoint(debug=False, mode='app'):
     configure_logging(debug=debug)
 
     # register blueprints
-    app.register_blueprint(routes.bp, url_prefix='')
+    app.register_blueprint(jobs.bp, url_prefix='')
 
     # Return validation errors as JSON
     @app.errorhandler(422)
