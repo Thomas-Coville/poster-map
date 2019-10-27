@@ -1,6 +1,6 @@
 
 from models import Job
-from generator import MapGen
+from tasks import say_hello
 
 class JobsService(object):
     
@@ -11,18 +11,9 @@ class JobsService(object):
             longitude = longitude
         ).save()
 
-        JobsService.execute_job(job.id)
+        print('FOOOOOOOOOOOOOOOOOOOOOO')
+
+
+        say_hello.delay('thomas')
 
         return job
-
-    @staticmethod
-    def execute_job(jobId):
-
-        job = Job.objects.get(id=jobId)
-
-        gen = MapGen(job.latitude, job.longitude)
-
-        # gen.execute()
-
-        pass
-        

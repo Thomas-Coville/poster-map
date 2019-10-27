@@ -1,0 +1,18 @@
+version: '3.4'
+services:
+  worker:
+    build:
+      context: posters
+      dockerfile: Dockerfile
+    container_name: some_worker
+    depends_on:
+      - redis
+    command: celery worker -A entrypoint_celery.celery --loglevel=debug
+    environment:
+    - DYNACONF_CELERY_BROKER_URL="redis://redis:6379"
+    - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379"
+  redis:
+    image: redis:alpine
+    container_name: some_redis
+    ports:
+      - "6379:6379"
