@@ -1,20 +1,23 @@
 version: '3.4'
 services:
-  # api:
-  #   build:
-  #     context: posters
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     - redis
-  #     - mongo
-  #   command: gunicorn --config ./config/gunicorn_config.py startup:create_app()
-  #   environment:
-  #   - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
-  #   - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
-  #   - DYNACONF_MONGODB_HOST="mongo"
-  #   ports:
-  #   - "8000:8000"    
-  #   restart: always
+  api:
+    build:
+      context: posters
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - mongo
+    command: gunicorn --config ./config/gunicorn_config.py startup:create_app()
+    environment:
+    - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
+    - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
+    - DYNACONF_MONGODB_HOST="mongo"
+    - DYNACONF_IMAGES_OUTPUT_PATH="/output"
+    ports:
+    - "8000:8000"    
+    restart: always
+    volumes:
+    - "./output:/output"
   worker:
     build:
       context: posters
@@ -26,8 +29,11 @@ services:
     environment:
     - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
     - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
-    - DYNACONF_MONGODB_HOST="mongo"    
+    - DYNACONF_MONGODB_HOST="mongo"  
+    - DYNACONF_IMAGES_OUTPUT_PATH="/output"  
     restart: always
+    volumes:
+    - "./output:/output"
   flower:
     build:
       context: posters
@@ -39,7 +45,6 @@ services:
     environment:
     - DYNACONF_CELERY_BROKER_URL="redis://redis:6379/0"
     - DYNACONF_CELERY_RESULT_BACKEND="redis://redis:6379/0"
-    - DYNACONF_MONGODB_HOST="mongo"
     ports:
     - "5000:5000"
   redis:

@@ -15,7 +15,7 @@ def execute_job(jobId):
     job.save()
 
     gen = MapGen(job.latitude, job.longitude)
-    # gen.execute(jobId)    
+    gen.execute(jobId)    
 
     job.status = "completed"
     job.save()
