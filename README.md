@@ -15,7 +15,7 @@ The objectives were to learn:
 - Create mental bridges with C# concepts that I am more familiar with
 
 
-# Usage
+# Run
 
 For Convenience, [docker compose](docker-compose.yml) at the root will bootstrap the entire stack:
 - MongoDB
@@ -23,6 +23,7 @@ For Convenience, [docker compose](docker-compose.yml) at the root will bootstrap
 - Celery Worker
 - Flask App
 - Flower (Celery dashboard)
+
 
 ## Google Static Maps API Key
 
@@ -60,9 +61,21 @@ cd posters/
 pip install dynaconf
 dynaconf write py -s GOOGLE_STATIC_MAPS_API_KEY='you-api-key' 
 ```
-this will create a `.secrets.toml` file that will be copied inside the docker container
+this will create a `/posters/.secrets.toml` file that will be copied inside the docker container
 
+> You can also create the file manually
+```
+[default]
+GOOGLE_STATIC_MAPS_API_KEY = "the API Key"
+ ```
 
+# API Usage
+
+METHOD | Route | Body | Description
+:---: | --- | --- | ---
+POST | `localhost:8000/jobs/` | ``` { "latitude": 45.378906,	"longitude": -74.106506  }``` | Creates a generation job by passing the coordinates (bottom left) of the map to create
+GET | `http://localhost:8000/jobs/{job-id}` | - | Get the status of the generation for the given ID
+GET | ` http://localhost:8000/jobs/{job-id}/image` | - | downloads the resulting image for the given ID
 
 # Lesson Learns & Gotchas
 - Doing Python development on Windows is HARD:
@@ -72,16 +85,16 @@ this will create a `.secrets.toml` file that will be copied inside the docker co
 - kombu 4.6.5+ seems to cause an issue with Flower, stick to the 4.6.3 version
 
 # Next Steps
+- Unit Tests
+- Error handling
+- Logging
+- Build Script
 - UI to front the API
 - VSCode configuration
-- Logging
-- Unit Tests
-- Build Script
 - Customize Map Styling
 - Images and Jobs Eviction
 - Cloud deployment and Terraform
 - Swagger definition
-- Error handling
 
 
 # Credits
