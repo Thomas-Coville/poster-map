@@ -111,3 +111,4 @@ venv.bak/
 **/*.local* 
 posters/high_resolution_image.png
 docker-compose.override.yaml
+output/
