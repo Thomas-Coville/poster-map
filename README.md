@@ -14,6 +14,30 @@ The objectives were to learn:
 - Class definitions and inheritance in Python
 - Create mental bridges with C# concepts that I am more familiar with
 
+# Lesson Learns & Gotchas
+- Doing Python development on Windows is HARD:
+- virtualenv powershell script does not work in my CMDER shell (readonly prompt)
+- Celery 4+ does not support windows officially and probably crashes under the hood. I spend one full day figuring out why my tasks were not being sent to the broker. I still haven't figured precisely why it doesn't worked but it works fine within a docker container.
+- the Flask integration with Marshmallow 3+ seems flaky, I had to fix it to the latest 2.x.x version
+- kombu 4.6.5+ seems to cause an issue with Flower, stick to the 4.6.3 version
+
+# Next Steps
+- Unit Tests !
+- Logging
+- Error handling
+- Build Script
+- UI to front the API
+- VSCode configuration
+- Customize Map Styling
+- Images and Jobs Eviction
+- Cloud deployment and Terraform
+- Swagger definition
+
+
+# Credits
+- the Original algorithm to build high res google maps extract can be found here: https://github.com/kuboris/high-def-gmap-export
+- This example of Flask & Celery https://github.com/zenyui/celery-flask-factory has been extremely useful to identify that the problem was not 'me' but the Windows integration 
+
 
 # Run
 
@@ -29,7 +53,7 @@ For Convenience, [docker compose](docker-compose.yml) at the root will bootstrap
 
 This project makes calls to the google maps API. you need to provide a valid google API key in order to do the calls: https://developers.google.com/maps/documentation/maps-static/intro
 
-the only place where this API key is used is [in the map generator](generator.py)
+the only place where this API key is used is [in the map generator](posters/generator.py)
 
 
 There are 2 ways to configure the API key:
@@ -77,26 +101,3 @@ POST | `localhost:8000/jobs/` | ``` { "latitude": 45.378906,	"longitude": -74.10
 GET | `http://localhost:8000/jobs/{job-id}` | - | Get the status of the generation for the given ID
 GET | ` http://localhost:8000/jobs/{job-id}/image` | - | downloads the resulting image for the given ID
 
-# Lesson Learns & Gotchas
-- Doing Python development on Windows is HARD:
-- virtualenv powershell script does not work in my CMDER shell (readonly prompt)
-- Celery 4+ does not support windows officially and probably crashes under the hood. I spend one full day figuring out why my tasks were not being sent to the broker. I still haven't figured precisely why it doesn't worked but it works fine within a docker container.
-- the Flask integration with Marshmallow 3+ seems flaky, I had to fix it to the latest 2.x.x version
-- kombu 4.6.5+ seems to cause an issue with Flower, stick to the 4.6.3 version
-
-# Next Steps
-- Unit Tests
-- Error handling
-- Logging
-- Build Script
-- UI to front the API
-- VSCode configuration
-- Customize Map Styling
-- Images and Jobs Eviction
-- Cloud deployment and Terraform
-- Swagger definition
-
-
-# Credits
-- the Original algorithm to build high res google maps extract can be found here: https://github.com/kuboris/high-def-gmap-export
-- This example of Flask & Celery https://github.com/zenyui/celery-flask-factory has been extremely useful to identify that the problem was not 'me' but the Windows integration 
