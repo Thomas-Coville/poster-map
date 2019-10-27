@@ -22,7 +22,7 @@ class JobsService(object):
 
         gen = MapGen(job.latitude, job.longitude)
 
-        gen.execute()
+        # gen.execute()
 
         pass
         
