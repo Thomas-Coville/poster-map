@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 
 ADD . /app
 
-CMD ["gunicorn", "--config", "gunicorn_config.py", "main:app"]
+CMD ["gunicorn", "--config", "./config/gunicorn_config.py", "main:app"]
