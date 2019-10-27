@@ -3,6 +3,7 @@ dynaconf
 flask
 flask-marshmallow
 flask-mongoengine
+flower
 gunicorn
 marshmallow==2.20.5
 marshmallow-mongoengine

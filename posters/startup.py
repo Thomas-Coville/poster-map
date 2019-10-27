@@ -1,5 +1,3 @@
-# inspired from https://github.com/GoogleCloudPlatform/getting-started-python/tree/master/optional-kubernetes-engine
-
 import os
 import logging
 import datetime
@@ -25,7 +23,7 @@ def entrypoint(debug=False, mode='app'):
     assert isinstance(mode, str), 'bad mode type "{}"'.format(type(mode))
     assert mode in ('app','celery'), 'bad mode "{}"'.format(mode)
 
-    app = Flask(__name__)    
+    app = Flask('posters')    
     configure_app(app)
 
     # Extensions
@@ -35,7 +33,6 @@ def entrypoint(debug=False, mode='app'):
     app.debug = debug
 
     configure_logging(debug=debug)
-    configure_celery(app, tasks.celery)
 
     # register blueprints
     app.register_blueprint(routes.bp, url_prefix='')
@@ -62,6 +59,9 @@ def entrypoint(debug=False, mode='app'):
     def health_check():
         return 'ok', 200
 
+
+    configure_celery(app, tasks.celery)
+
     if mode=='app':
         return app
     elif mode=='celery':
@@ -77,19 +77,25 @@ def configure_celery(app, celery):
     # set broker url and result backend from app config
     celery.conf.broker_url = app.config['CELERY_BROKER_URL']
     celery.conf.result_backend = app.config['CELERY_RESULT_BACKEND']
+    celery.conf.broker_transport_options  = {
+        'max_retries': 3,
+        'interval_start': 0,
+        'interval_step': 0.2,
+        'interval_max': 0.5,
+    }
 
-    # subclass task base for app context
-    # http://flask.pocoo.org/docs/0.12/patterns/celery/
+    # celery.conf.update(app.config)
+
     TaskBase = celery.Task
-    class AppContextTask(TaskBase):
-        abstract = True
+    class ContextTask(TaskBase):
         def __call__(self, *args, **kwargs):
             with app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
-    celery.Task = AppContextTask
+    celery.Task = ContextTask
 
-    # run finalize to process decorated tasks
     celery.finalize()
+
+    return celery
 
 def configure_logging(debug=False):
 

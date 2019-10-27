@@ -2,7 +2,7 @@ from celery import Celery
 from celery.signals import after_task_publish, before_task_publish
 
 
-celery = Celery(__name__, autofinalize=False)
+celery = Celery('posters')
 
 
 @after_task_publish.connect
@@ -23,8 +23,8 @@ def task_sent_handler(sender=None, headers=None, body=None, **kwargs):
         info=info,
     ))
 
-@celery.task(bind=True)
-def say_hello(self, dude):
+@celery.task()
+def say_hello(dude):
     print(f'hello {dude} !')
     return f"foooo {dude} !"
 
