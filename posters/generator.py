@@ -45,8 +45,13 @@ class MapGen(object):
         self.outdir = settings['IMAGES_OUTPUT_PATH'] 
 
     @staticmethod
-    def _latLonToPixels(lat, lon, zoom):
+    def _latLonToPixels(lat, lon, zoom):        
         "Converts given lat/lon in WGS84 Datum to XY in Spherical Mercator EPSG:900913"
+        
+        if lat > 90 or lat < -90 : raise Exception(f'latitude must be in range [-90:90] : received {lat}')
+        if lon > 180 or lon < -180 : raise Exception(f'longitude must be in range [-180:180] : received {lon}')
+
+
         mx = lon * MapGen._originShift / 180.0
         my = math.log( math.tan((90 + lat) * math.pi / 360.0 )) / (math.pi / 180.0)
         my = my * MapGen._originShift / 180.0
